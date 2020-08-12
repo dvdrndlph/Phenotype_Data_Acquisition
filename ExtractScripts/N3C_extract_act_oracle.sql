@@ -28,7 +28,7 @@ SELECT distinct '@siteAbbrev' as SITE_ABBREV,
    '@cdmVersion' as CDM_VERSION,
    null AS VOCABULARY_VERSION, -- hardwired null for ACT
    '@n3cPhenotypeYN' as N3C_PHENOTYPE_YN,
-   phenotype_version  as N3C_PHENOTYPE_VERSION,
+   (SELECT phenotype_version FROM @resultsDatabaseSchema.n3c_cohort WHERE ROWNUM <= 1) as N3C_PHENOTYPE_VERSION,
    CAST(SYSDATE as date) as RUN_DATE,
    CAST( (SYSDATE + NUMTODSINTERVAL(-@dataLatencyNumDays, 'day')) as date) as UPDATE_DATE,	--change integer based on your site's data latency
    CAST( (SYSDATE + NUMTODSINTERVAL(@daysBetweenSubmissions, 'day')) as date) as NEXT_SUBMISSION_DATE FROM DUAL;
